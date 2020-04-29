@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.8/spectre.min.css">
+    <style>
+        html {
+        height: 100%;
+        }
+        body {
+        min-height: 100%;
+        }
+        .container {
+            margin-top: 100px;
+            margin-bottom: 100px;
+            min-height: 100%;
+        }
+        #app {
+            margin-top: 100px;
+            margin-bottom: 100px;
+        }
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app" v-on:mouseMove="getPosition">
+
+        <h2>Pozycja x: {{positionX}}</h2>
+        <h2>Pozycja y: {{positionY}}</h2>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
+
+    <script>
+
+        new Vue({
+            el: "#app",
+            data: {
+                positionX: 0,
+                positionY: 0,
+            },
+
+            methods: {
+                getPosition: function($event){
+                    console.log("event!");
+                    this.positionX = $event.x
+                    this.positionY = $event.y
+                    //return this.positionX+" "+this.positionY;
+                },
+            },
+            
+            
+        });
+
+        
+
+    </script>
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.8/spectre.min.css">
+    <style>
+        .container {
+            margin-top: 100px;
+            margin-bottom: 100px;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container grid-lg">
+
+        <div id="app" >
+        <h1>Licznik {{counter}}</h1>
+        <button class="btn btn-primary" v-on:click="addOneToCounter" :disabled="counter >= 5">Zwiększ licznik</button>
+        <button class="btn btn-primary" v-on:click="restart">Zeruj licznik</button>
+        <input type="text" v-bind:value="input" v-model="message"  v-on:input="changeInputValue">
+        <h1>{{message}}</h1>
+    </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
+
+    <script>
+
+        new Vue({
+
+           el: "#app",
+           data: {
+               counter:0,
+               text:" ",
+               message:""
+           },
+
+           methods: {
+               addOneToCounter: function(e) {
+                   this.counter++;
+                   console.log(e);
+               },
+               restart: function() {
+                    this.counter=0;
+               },
+           },
+            
+        });
+
+    </script>
+

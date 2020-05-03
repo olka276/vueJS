@@ -48,7 +48,7 @@
         },
         watch: {
             "$route"() {
-                this.changeSlide(Number(this.$route.param.index), true);
+                this.changeSlide(Number(this.$route.params.index), true);
             }
         },
         methods: {

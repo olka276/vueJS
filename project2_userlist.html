@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.8/spectre.min.css">
+    <style>
+        .container {
+            margin-top: 100px;
+            margin-bottom: 100px;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container grid-lg">
+
+        <div id="app" v-cloak>
+            
+            <edu-users :users="users"></edu-users>
+
+            <br>
+
+            <ol>
+                <li v-for="user in users">{{user.fullName}} - {{user.age}}</li>
+            </ol>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
+
+    <script>
+
+        var Event = new Vue({
+            methods: {
+                remove: function(id) {
+                    this.$emit("remove", id)
+                }
+            }
+        })
+
+        Vue.component('edu-users', {
+            template: `
+            <div>
+            <h1>Użytkownicy</h1>
+
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Imię i nazwisko</th>
+                        <th>Wiek</th>
+                        <th>Edytuj</th>
+                        <th>Usuń</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    <edu-user
+                    @deleteUser="remove" 
+                    v-for="(user, index) in users"
+                    :user="user" 
+                    :index="index"
+                    :key="user.id"> </edu-user>
+                    
+                </tbody>
+            </table>
+            </div>
+            `,
+            props: ['users'],
+        })
+
+        Vue.component("edu-user", {
+            template: `
+                <tr>
+                    <td>{{index+1}}</td>
+                    <td>
+                        <template v-if="editMode">
+                            <div class="form-group">
+                                <input type="text" class="form-input" v-model.lazy="user.fullName">
+                            </div>
+                        </template>
+                        <template v-else>
+                            {{user.fullName}}
+                        </template>
+                    </td>
+                    <td>{{user.age}}</td>
+                    <td>
+                        <button class="btn btn-primary" @click="editMode = !editMode">
+                           <i class="icon" :class="{'icon-edit': editMode}"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-error" @click="remove(user.id)">
+                            Usuń
+                        </button>
+                    </td>
+                </tr>
+            `,
+            data: function() {
+                return {
+                    editMode: false
+                }
+            },
+            props: {
+                index: {
+                    type: Number
+                },
+                user: {
+                    type: Object
+                }
+            },
+            methods: {
+                remove: function(id) {
+                  Event.remove(id)
+                  this.$emit('deleteUser',)
+                }
+            },
+            created: function(){
+                console.log("created")
+            }
+        })
+
+        new Vue({
+            el: "#app",
+            data: {
+                users: [
+                    {id: 1, fullName: "Jan Kowalski", age: 32},
+                    {id: 2, fullName: "Andrzej Boruc", age: 24},
+                    {id: 3, fullName: "Anna Nowak", age: 56},
+                    {id: 4, fullName: "Krzysztof Kononowicz", age: 60},
+                    {id: 5, fullName: "Wojciech Suchodolski", age: 45},
+                ]
+            },
+            methods: {
+                remove: function(id) {
+                    var index = _.findIndex(this.users, ["id", id]);
+                    this.users.splice(index,1);
+                }
+            },
+
+            created: function() {
+                Event.$on("remove", this.remove)
+            }
+        })
+
+    </script>
+
+</body>
+</html>
